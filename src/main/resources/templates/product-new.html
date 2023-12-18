@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:insert="~{blocks/header :: header}"></header>
+
+<body>
+
+<div class="container">
+    <div th:if="${user.email}">
+        <form style="width: 80%;" th:action="@{/product-new}" th:method="POST" enctype="multipart/form-data"
+              class="mx-5" th:object="${product}">
+            <div class="row">
+                <div class="col d-flex flex-column">
+                    <label for="title">Product title: </label>
+                    <input class="form-control mb-4" type="text" th:field="*{title}"
+                           placeholder="Enter title of the product" aria-label="title" id="title">
+                    <div class="alert alert-warning" role="alert" th:if="${#fields.hasErrors('title')}"
+                         th:errors="*{title}">Name Error
+                    </div>
+
+                    <label for="category">Choose category of product: </label>
+                    <select class="form-select mb-4" name="categoryTitle" id="category">
+                        <option th:each="cat : ${categories}" th:text="${cat.title}">title</option>
+                    </select>
+
+                    <label for="price">Product price: </label>
+                    <input class="form-control mb-4" type="number" name="price" th:field="*{price}"
+                           placeholder="Enter price of the product" aria-label="price" id="price">
+                    <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price
+                        error
+                    </div>
+
+                    <label for="exampleFormControlTextarea1" class="form-label">Description:</label>
+                    <textarea class="form-control mb-4" id="exampleFormControlTextarea1" rows="3"
+                              th:field="*{description}"></textarea>
+
+                    <label for="city">Location: </label>
+                    <input class="form-control mb-4" type="text" th:field="*{city}"
+                           placeholder="Enter location of the product"
+                           aria-label="city" id="city">
+                </div>
+                <div class="col ml-4 d-flex flex-column">
+                    First photo: <input class="form-control" type="file" name="file1">
+                    Second photo: <input class="form-control" type="file" name="file2">
+                    Third photo: <input class="form-control" type="file" name="file3">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input class="mt-3 btn btn-success" type="submit" value="Add product"/><br><br>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>

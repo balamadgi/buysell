@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:insert="blocks/header :: header"></header>
+
+<body>
+<h1 th:text="'Edit user role ' + ${user.name}"></h1><hr>
+<form action="/admin/user/edit" method="post">
+
+  <div th:each="role : ${roles}">
+    <label>
+      <input type="checkbox" th:name="${role}" th:checked="${(user.getRoles().contains(role)) ? true : false}"> <span th:text="${role}"></span>
+    </label>
+  </div>
+  <input type="hidden" th:value="${user.id}" name="userId">
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+  <button type="submit">Save</button>
+</form>
+
+</body>
+</html>

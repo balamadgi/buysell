@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:insert="~{blocks/header :: header}"></header>
+
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Admin panel</h1><hr>
+            <h3>Adding a new category</h3>
+            <form action="/admin/category/create" method="post" >
+                Category title: <input type="text" name="title"/>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input type="submit" value="Add category"/>
+            </form> <br><br>
+            <h3>Edit category</h3>
+            <table class="table table-hover" style="width: 60%;">
+                <thead>
+                <tr>
+                    <th scope="col">Category ID</th>
+                    <th scope="col">Category Title</th>
+                    <th scope="col">Edit Category</th>
+                    <th scope="col">Delete Category</th>
+                    <th scope="col">Info about product quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cat : ${categories}">
+                    <th scope="row" th:text="${cat.id}">Category ID</th>
+                    <td th:text="${cat.title}">Category Title</td>
+                    <td>
+                        <form th:action="@{'/admin/category/edit/' + ${cat.id}}" method="post">
+                            <input type="text" name="newTitle">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{'/admin/category/delete/' + ${cat.id}}" method="post">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                    <td th:text="${cat.getProducts().size()}">quantity of products</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <br><br>
+            <h3>Users</h3>
+            <table class="table table-hover" style="width: 80%;">
+                <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone number</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Ban</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.email}">Email</th>
+                    <td th:text="${user.phoneNumber}">Phone number</td>
+                    <td th:text="${user.active}">Activity</td>
+                    <td th:text="${user.getRoles()}">Role</td>
+                    <td>
+                        <form th:action="@{'/admin/user/ban/' + ${user.id}}" method="post">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Ban">
+                        </form>
+                    </td>
+                    <td><a th:href="@{'/admin/user/edit/' + ${user.id}}">Edit user role</a></td>
+                    <td><a th:href="@{'/user/' + ${user.id}}">Details</a></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

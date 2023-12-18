@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:insert="~{blocks/header :: header}"></header>
+
+<body>
+
+<div class="container text-center">
+    <div class="row mt-3">
+        <div class="col d-flex flex-column">
+            <div id="carouselExampleIndicators" class="carousel slide ">
+                <div class="carousel-indicators">
+                    <div th:each="image, itemStat : ${product.getImages()}">
+                        <button type="button" data-bs-target="#carouselExampleIndicators"
+                                th:data-bs-slide-to="${itemStat.index}"
+                                th:class="${itemStat.index == 0} ? 'active' : ''"
+                                th:aria-current="${itemStat.index == 0} ? 'true' : ''"></button>
+                    </div>
+                </div>
+
+                <div class="carousel-inner ">
+                    <div th:each="img, itemStat : ${product.getImages()}">
+                        <div th:class="${itemStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                            <img th:src="@{'images/' + ${img.id}}" alt="..." class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col d-flex flex-column">
+            <div class="text-center">
+                Title: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.title}">Title</h3>
+                Price: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.price}">Price</h3>
+                Contacts of seller: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.city}">City</h3>
+                <h5 class="fw-bold text-body-emphasis" th:text="${userToView.phoneNumber}">phoneNumber</h5>
+                <div class="col-lg-6 mx-auto">
+
+                    <a th:href="@{'/category/' + ${product.getCategory().getId()}}">Get another from <span
+                            th:text="${product.getCategory().getTitle()}">catTitle</span></a> <br>
+                    <a th:href="@{'/user/' + ${userToView.id}}">Get info about user <span
+                            th:text="${product.getUser().getName()}">UserName</span></a>
+
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3" th:if="${checkUser}">
+                        <form th:action="@{'/product/delete/' + ${product.id}}" method="post">
+                            <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Delete</button>
+                        </form>
+                        <form th:action="@{'/product/edit-start/' + ${product.id}}" method="get">
+                            <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Edit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        Description:
+        <div style="text-align: justify;" class="lead mb-1" th:text="${product.description}">Description</div>
+    </div>
+
+    <!--    Edition-->
+    <div class="row mt-3" th:if="${startEdition}">
+        <div th:if="${user.email}">
+            <form th:action="@{'/product/edit/' + ${product.id}}" th:method="POST"
+                  enctype="multipart/form-data" class="mx-5"
+                  th:object="${product}">
+                <div class="row">
+                    <div class="col d-flex flex-column">
+                        Product title: <input class="form-control mb-1" type="text" th:field="*{title}"
+                                              th:placeholder="${product.title}" aria-label="title">
+
+                        Choose category of product: <select class="form-select mb-1" name="newCategoryTitle">
+                        <option th:each="cat : ${categories}" th:text="${cat.title}"
+                                th:selected="${cat.getId == product.getCategory().getId()} ? 'true' : 'false'">Category
+                        </option>
+                    </select>
+
+                        Product price: <input class="form-control mb-1" type="number" th:field="*{price}"
+                                              th:placeholder="${product.price}" aria-label="price">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description:</label>
+                        <textarea class="form-control mb-1" id="exampleFormControlTextarea1" rows="3"
+                                  th:field="*{description}" placeholder="Enter new description"></textarea>
+                        Location :<input class="form-control mb-1" type="text" th:field="*{city}"
+                                         th:placeholder="${product.city}" aria-label="city">
+
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input class="mt-1 btn btn-success" type="submit" value="Edit information"/><br><br>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col d-flex flex-column mt-1 text-center" th:each="img : ${product.getImages()}">
+
+                    <img th:src="@{'images/' + ${img.id}}" alt="..." class="img-fluid mb-auto mx-auto d-block" style="width: 200px;">
+
+                    <form th:action="@{'/image/delete/' + ${img.id}}" method="post">
+                        <button type="submit" class="btn btn-danger mt-1 mb-2 ">Delete photo</button>
+                    </form>
+
+                    <form th:action="@{'/image/edit/' + ${img.id}}" method="post" enctype="multipart/form-data">
+                        <input class="form-control " type="file" name="file">
+                        <button type="submit" class="btn btn-warning mb-2 mt-1">Edit photo</button>
+                    </form>
+                </div>
+                <form th:action="@{'/image/add/' + ${product.id}}" method="post" enctype="multipart/form-data">
+                    <input class="form-control " type="file" name="file">
+                    <button type="submit" class="btn btn-outline-secondary mb-2 mt-1">Add new photo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

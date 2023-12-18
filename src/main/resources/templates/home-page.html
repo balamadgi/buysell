@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:insert="~{blocks/header :: header}"></header>
+
+<body>
+<!--Sorting-->
+<div class="container text-end mb-3 mt-3">
+    Sorting by:
+    <a th:href="@{'/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir}}">Title</a>
+    <a th:href="@{'/page/' + ${currentPage} + '?sortField=city&sortDir=' + ${reverseSortDir}}">City</a>
+    <a th:href="@{'/page/' + ${currentPage} + '?sortField=price&sortDir=' + ${reverseSortDir}}">Price</a>
+
+</div>
+
+
+<div th:insert="~{blocks/product-card :: product-card}"></div>
+
+
+<!--Paging-->
+<div class="container text-center mb-3">
+    Total Items: [[${totalItems}]]
+    <hr>
+    <a th:if="${currentPage > 1}" th:href="@{'/page/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+    <span th:unless="${currentPage > 1}">First</span>
+
+    <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+    <span th:unless="${currentPage > 1}">Previous</span>
+
+    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+    <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}">[[${ i!=0 ? i : ""}]]</a>
+    <span th:unless="${currentPage != i}">[[${i}]]</span>
+    &nbsp;
+</span>
+
+    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+    <span th:unless="${currentPage < totalPages}">Next</span>
+
+    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+    <span th:unless="${currentPage < totalPages}">Last</span>
+</div>
+
+</body>
+</html>
