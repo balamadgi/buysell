@@ -22,7 +22,7 @@
                 <tr>
                     <th scope="col">Category ID</th>
                     <th scope="col">Category Title</th>
-                    <th scope="col">Edit Category</th>
+                    <th scope="col">Edit title of category</th>
                     <th scope="col">Delete Category</th>
                     <th scope="col">Info about product quantity</th>
                 </tr>
@@ -35,7 +35,7 @@
                         <form th:action="@{'/admin/category/edit/' + ${cat.id}}" method="post">
                             <input type="text" name="newTitle">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                            <input type="submit" value="Edit">
+                            <input type="submit" value="Edit title">
                         </form>
                     </td>
                     <td>

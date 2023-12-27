@@ -49,17 +49,8 @@ public class ProductController {
         int pageSize = 5;
 
         Page<Product> page = productService.listAll(pageNum, pageSize, sortField, sortDir);
-        List<Product> listProducts = page.getContent();
 
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
-
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("listProducts", listProducts);
+        pagingToModel(page, pageNum, sortField, sortDir, model);
 
         return "home-page";
     }
@@ -81,17 +72,9 @@ public class ProductController {
         int pageSize = 5;
 
         Page<Product> page = productService.listAllByCategoryId(categoryId, pageNum, pageSize, sortField, sortDir);
-        List<Product> listProducts = page.getContent();
 
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalItems", page.getTotalElements());
+        pagingToModel(page, pageNum, sortField, sortDir, model);
 
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        model.addAttribute("listProducts", listProducts);
         return "prod-category";
     }
 
@@ -164,5 +147,21 @@ public class ProductController {
         return "product-detail";
     }
 
+    private void pagingToModel(Page<Product> page,
+                               int pageNum,
+                               String sortField,
+                               String sortDir,
+                               Model model) {
+        List<Product> listProducts = page.getContent();
 
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
+        model.addAttribute("listProducts", listProducts);
+    }
 }
