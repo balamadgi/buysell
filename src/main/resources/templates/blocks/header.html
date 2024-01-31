@@ -56,6 +56,11 @@
                         <a class="nav-link" th:href="@{'/user/' + ${user.id}}">
                             <img class="mx-2" src="/static/images/user.png" alt="User profile" width="30" height="24"><span th:text="${user.name}"></span></a>
                     </form>
+                    <form class="nav-item">
+                        <a class="nav-link" th:href="@{'/user/' + ${user.id}} + '/wishlist'">
+                            <img class="mx-2" src="/static/images/wishlist.png" alt="User profile" width="30" height="24"><span class="wishlist" th:text="${wishListSize}"></span></a>
+
+                    </form>
                     <form class="d-flex" action="/logout" method="post">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                         <button class="btn btn-light" type="submit">Logout</button>

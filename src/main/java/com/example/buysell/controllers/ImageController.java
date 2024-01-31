@@ -5,6 +5,7 @@ import com.example.buysell.models.Product;
 import com.example.buysell.repositories.ImageRepository;
 import com.example.buysell.services.ImageService;
 import com.example.buysell.services.ProductService;
+import com.example.buysell.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class ImageController {
     private final ImageRepository imageRepository;
     private final ImageService imageService;
     private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping(value = {"product/images/{id}",
             "user/product/images/{id}",
@@ -46,7 +48,7 @@ public class ImageController {
     @PostMapping("/image/delete/{id}")
     public String deleteImage(@PathVariable Long id, Principal principal) {
         Product product = productService.getProductByImageId(id);
-        imageService.deleteImage(productService.getUserByPrincipal(principal), id);
+        imageService.deleteImage(userService.getUserByPrincipal(principal), id);
         return "redirect:/product/edit-start/" + product.getId();
     }
 

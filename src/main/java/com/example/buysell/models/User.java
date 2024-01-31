@@ -42,6 +42,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private WishList wishList;
+
+
 //security
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);

@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -48,4 +50,23 @@ public class Product {
         images.add(image);
     }
 
+    public boolean inWishList(User user) {
+        if (user == null) return false;
+        WishList wishList = user.getWishList();
+        if (wishList == null) return false;
+        else return wishList.getProducts().contains(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
+    }
 }

@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="col d-flex flex-column">
-            <div class="text-center">
+            <div class="text-center" th:if="${user.email}">
                 Title: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.title}">Title</h3>
                 Price: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.price}">Price</h3>
                 Contacts of seller: <h3 class="display-6 fw-bold text-body-emphasis" th:text="${product.city}">City</h3>
@@ -58,6 +58,14 @@
                             <button type="submit" class="btn btn-outline-secondary btn-lg px-4">Edit</button>
                         </form>
                     </div>
+
+                    <a th:if="${user.email}" th:href="@{ ${product.inWishList(user)} ? '/product/' + ${product.id} + '/del_from_wishlist' : '/product/' + ${product.id} + '/add_to_wishlist'}">
+                        <img  class="wishlistImg" th:src="@{ ${product.inWishList(user)} ? '/static/images/wishlist-checked.png' : '/static/images/wishlist.png'}"
+                              th:alt="${product.inWishList(user)} ? 'Delete from wishlist' : 'Add to wishlist'"
+                              width="60" >
+                    </a>
+
+
                 </div>
             </div>
         </div>

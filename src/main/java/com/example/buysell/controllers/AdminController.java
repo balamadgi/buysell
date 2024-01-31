@@ -30,7 +30,7 @@ public class AdminController {
 
         model.addAttribute("users", userService.listOfUsers());
         model.addAttribute("categories", categoryService.listOfCategories());
-        model.addAttribute("user", productService.getUserByPrincipal(principal));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "admin";
     }
 

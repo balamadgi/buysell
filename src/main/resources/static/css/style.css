@@ -3,3 +3,18 @@
      overflow-y: auto;
      max-height: calc(100vh - 150px);
 }
+
+.wishlist {
+    background-color: white;
+    position: static;
+}
+
+.wishlistImg {
+    float: right;
+    margin: 9px;
+}
+
+.btn-detail {
+margin-left: 20px;
+}
+

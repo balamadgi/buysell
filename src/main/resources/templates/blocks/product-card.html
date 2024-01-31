@@ -9,11 +9,14 @@
                     <img th:src="@{ ${prod.getPreviewImageId != null } ? '~/product/images/' + ${prod.getPreviewImageId} : '/static/images/no-pictures.png'}"
                          class="card-body mt-auto img-fluid" alt="...">
 
+
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mt-auto" th:text="${prod.title} + ': ' + ${prod.price} + ' UAH' + ''">Card
                             title</h5>
-                        <form th:action="'/product/' + ${prod.id}" method="get">
-                            <input type="submit" value="Show details" class="btn btn-primary mt-auto">
+                        <form class="btn-detail" th:action="'/product/' + ${prod.id}" method="get">
+                            <input type="submit" value="Show details" class="btn btn-primary">
+
+                          </a>
                         </form>
                     </div>
                 </div>

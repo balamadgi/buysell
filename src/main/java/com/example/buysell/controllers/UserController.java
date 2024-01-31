@@ -2,6 +2,7 @@ package com.example.buysell.controllers;
 
 import com.example.buysell.models.Product;
 import com.example.buysell.models.User;
+import com.example.buysell.models.WishList;
 import com.example.buysell.services.CategoryService;
 import com.example.buysell.services.ProductService;
 import com.example.buysell.services.UserService;
@@ -10,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -24,6 +22,15 @@ public class UserController {
     private final UserService userService;
     private final CategoryService categoryService;
     private final ProductService productService;
+
+    @ModelAttribute(value = "wishListSize")
+    public int wishListSize(Principal principal) {
+        WishList wishList = userService.getUserByPrincipal(principal).getWishList();
+        if (wishList != null)
+            return wishList.getProducts().size();
+        else
+            return 0;
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -63,10 +70,10 @@ public class UserController {
                            @PathVariable(name = "pageNum") int pageNum,
                            @Param("sortField") String sortField,
                            @Param("sortDir") String sortDir) {
-        model.addAttribute("user", productService.getUserByPrincipal(principal));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("userToView", userToView);
         model.addAttribute("categories", categoryService.listOfCategories());
-
+        
         int pageSize = 5;
 
         Page<Product> page = productService.listAllByUser(userToView, pageNum, pageSize, sortField, sortDir);
