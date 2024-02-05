@@ -51,8 +51,14 @@ public class ProductController {
 
     @GetMapping("/")
     public String productsAll(Model model) {
-        return viewPage(model, 1, "title", "asc");
+        return "index";
     }
+
+    @GetMapping("/categories")
+    public String catShow(Model model) {
+        return "categories";
+    }
+
 
     @GetMapping("/page/{pageNum}")
     public String viewPage(Model model,
@@ -64,7 +70,7 @@ public class ProductController {
         Page<Product> page = productService.listAll(pageNum, pageSize, sortField, sortDir);
         pagingToModel(page, pageNum, sortField, sortDir, model);
 
-        return "home-page";
+        return "index";
     }
 
     @GetMapping("/category/{id}")
@@ -98,12 +104,12 @@ public class ProductController {
         return "search-result";
     }
 
-    @GetMapping("/product-new")
+    @GetMapping("/post-ad")
     public String createProduct(Model model, Principal principal, @ModelAttribute("product") Product product) {
-        return "product-new";
+        return "post-ad";
     }
 
-    @PostMapping("/product-new")
+    @PostMapping("/post-ad")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
                                 @RequestParam("file3") MultipartFile file3,
@@ -113,7 +119,7 @@ public class ProductController {
         product.setCategory(productService.getCategoryByTitle(categoryTitle));
 
         if (bindingResult.hasErrors()) {
-            return "product-new";
+            return "post-ad";
         } else {
 
             productService.saveProduct(principal, product, file1, file2, file3, categoryTitle);

@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resale | Home</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select.css">
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="stylesheet" href="/static/css/flexslider.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <link href='//fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css'>
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <!-- js -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-select.js"></script>
 
+    <!-- Source -->
+
+</head>
 <header th:insert="~{blocks/header :: header}"></header>
+
 
 <body>
 
@@ -11,18 +37,22 @@
         <div class="col">
             <h1>Admin panel</h1><hr>
             <h3>Adding a new category</h3>
-            <form action="/admin/category/create" method="post" >
+            <form action="/admin/category/create" method="post" enctype="multipart/form-data"
+                  class="mx-5">
                 Category title: <input type="text" name="title"/>
+                Category image: <input class="form-control" type="file" name="newCatImage">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <input type="submit" value="Add category"/>
             </form> <br><br>
             <h3>Edit category</h3>
-            <table class="table table-hover" style="width: 60%;">
+            <table class="table table-hover" style="width: 80%;">
                 <thead>
                 <tr>
-                    <th scope="col">Category ID</th>
-                    <th scope="col">Category Title</th>
-                    <th scope="col">Edit title of category</th>
+                    <th scope="col">Cat ID</th>
+                    <th scope="col">Cat Title</th>
+                    <th scope="col">Edit cat title</th>
+                    <th scope="col">Cat image</th>
+                    <th scope="col">Edit cat image</th>
                     <th scope="col">Delete Category</th>
                     <th scope="col">Info about product quantity</th>
                 </tr>
@@ -32,10 +62,20 @@
                     <th scope="row" th:text="${cat.id}">Category ID</th>
                     <td th:text="${cat.title}">Category Title</td>
                     <td>
-                        <form th:action="@{'/admin/category/edit/' + ${cat.id}}" method="post">
+                        <form th:action="@{'/admin/category/edit-title/' + ${cat.id}}" method="post" enctype="multipart/form-data">
                             <input type="text" name="newTitle">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                             <input type="submit" value="Edit title">
+                        </form>
+                    </td>
+                    <td>
+                        <img th:src="@{'/category/images/' + ${cat.getImage().getId()}}">
+                    </td>
+                    <td>
+                        <form th:action="@{'/admin/category/edit-img/' + ${cat.id}}" method="post" enctype="multipart/form-data">
+                            Category image: <input class="form-control" type="file" name="newImage">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Edit cat img"/>
                         </form>
                     </td>
                     <td>

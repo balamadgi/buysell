@@ -1,9 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Resale | Home</title>
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-select.css">
+  <link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+  <link rel="stylesheet" href="/static/css/flexslider.css" type="text/css" media="screen"/>
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css"/>
+  <!-- for-mobile-apps -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <!-- //for-mobile-apps -->
+  <!--fonts-->
+  <link href='//fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+        rel='stylesheet' type='text/css'>
+  <!--//fonts-->
+  <!-- js -->
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <!-- js -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/bootstrap-select.js"></script>
 
-<header th:insert="blocks/header :: header"></header>
+  <!-- Source -->
+
+</head>
+
 
 <body>
+<header th:insert="blocks/header :: header"></header>
 <h1 th:text="'Edit user role ' + ${user.name}"></h1><hr>
 <form action="/admin/user/edit" method="post">
 

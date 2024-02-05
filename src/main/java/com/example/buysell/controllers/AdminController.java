@@ -1,8 +1,11 @@
 package com.example.buysell.controllers;
 
+import com.example.buysell.models.Product;
 import com.example.buysell.models.User;
 import com.example.buysell.models.emuns.Role;
+import com.example.buysell.repositories.CategoryRepository;
 import com.example.buysell.services.CategoryService;
+import com.example.buysell.services.ImageService;
 import com.example.buysell.services.ProductService;
 import com.example.buysell.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
@@ -23,7 +28,8 @@ import java.util.Map;
 public class AdminController {
     private final UserService userService;
     private final CategoryService categoryService;
-    private final ProductService productService;
+    private final ImageService imageService;
+    private final CategoryRepository categoryRepository;
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
@@ -55,15 +61,23 @@ public class AdminController {
     }
 
     @PostMapping("/admin/category/create")
-    public String addCategory(@RequestParam("title") String categoryTitle) {
-        categoryService.createCategory(categoryTitle);
+    public String addCategory(@RequestParam("catImage") MultipartFile file, @RequestParam("title") String categoryTitle) throws IOException {
+        categoryService.createCategory(categoryTitle, file);
         return "redirect:/admin";
     }
 
-    @PostMapping("/admin/category/edit/{id}")
-    public String editCategory(@PathVariable("id") Long id,
+    @PostMapping("/admin/category/edit-title/{id}")
+    public String editCategoryTitle(@PathVariable("id") Long id,
                                @RequestParam("newTitle") String newCategoryTitle) {
-        categoryService.editCategory(id, newCategoryTitle);
+        categoryService.editCategoryTitle(id, newCategoryTitle);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/category/edit-img/{catId}")
+    public String editImage(@PathVariable Long catId,
+                            @RequestParam("newImage") MultipartFile file) throws IOException {
+
+        imageService.editImage(categoryRepository.findFirstById(catId).getImage().getId(), file);
         return "redirect:/admin";
     }
 

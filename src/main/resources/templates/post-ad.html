@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Resale | Post Ad</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-select.css">
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- //for-mobile-apps -->
+    <!--fonts-->
+    <link href='//fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css'>
+    <!--//fonts-->
+    <!-- js -->
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <!-- js -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-select.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.leanModal.min.js"></script>
+    <link href="/static/css/jquery.uls.css" rel="stylesheet"/>
+    <link href="/static/css/jquery.uls.grid.css" rel="stylesheet"/>
+    <link href="/static/css/jquery.uls.lcd.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/easy-responsive-tabs.css "/>
+    <script src="/static/js/easyResponsiveTabs.js"></script>
+</head>
+<body>
+
+<header th:insert="~{blocks/header :: header}"></header>
+
+<!-- Submit Ad -->
+<div class="submit-ad main-grid-border">
+    <div class="container">
+        <h2 class="head">Post an Ad</h2>
+        <div class="post-ad-form">
+            <form th:action="@{/post-ad}" th:method="POST" enctype="multipart/form-data"
+                  class="mx-5" th:object="${product}">
+                <label>Select Category <span>*</span></label>
+                <select class="" name="categoryTitle" id="category">
+                    <option th:each="cat : ${categories}" th:text="${cat.title}">title</option>
+                </select>
+                <div class="clearfix"></div>
+                <label>Ad Title <span>*</span></label>
+                <input type="text" class="phone" placeholder="" th:field="*{title}">
+                <div class="alert alert-warning" role="alert" th:if="${#fields.hasErrors('title')}"
+                     th:errors="*{title}">Name Error
+                </div>
+                <div class="clearfix"></div>
+                <label>Ad Price <span>*</span></label>
+                <input type="text" class="phone" placeholder="" th:field="*{price}">
+                <div class="alert alert-warning" role="alert" th:if="${#fields.hasErrors('price')}"
+                     th:errors="*{price}">Price Error
+                </div>
+                <div class="clearfix"></div>
+                <label>Ad location <span>*</span></label>
+                <input type="text" class="phone" placeholder="" th:field="*{city}">
+                <div class="clearfix"></div>
+
+                <label>Ad Description <span>*</span></label>
+                <textarea class="mess" placeholder="Write few lines about your product" th:field="*{description}"></textarea>
+                <div class="clearfix"></div>
+                <div class="upload-ad-photos">
+                    <label>Photos for your ad :</label>
+                    <div class="photos-upload-view">
+                        First photo: <input class="form-control" type="file" name="file1">
+                        Second photo: <input class="form-control" type="file" name="file2">
+                        Third photo: <input class="form-control" type="file" name="file3">
+
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="personal-details">
+                    <div class="clearfix"></div>
+                    <p class="post-terms">By clicking <strong>post Button</strong> you accept our
+                        <a href="terms.html" target="_blank">Terms of Use </a> and <a href="privacy.html" target="_blank">Privacy Policy</a></p>
+
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" value="Post">
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+    <!-- // Submit Ad -->
+    <!--footer section start-->
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="foo-grids">
+                    <div class="col-md-3 footer-grid">
+                        <h4 class="footer-head">Who We Are</h4>
+                        <p>It is a long established fact that a reader will be distracted by the readable content of a
+                            page when looking at its layout.</p>
+                        <p>The point of using Lorem Ipsum is that it has a more-or-less normal letters, as opposed to
+                            using 'Content here.</p>
+                    </div>
+                    <div class="col-md-3 footer-grid">
+                        <h4 class="footer-head">Help</h4>
+                        <ul>
+                            <li><a href="howitworks.html">How it Works</a></li>
+                            <li><a href="sitemap.html">Sitemap</a></li>
+                            <li><a href="faq.html">Faq</a></li>
+                            <li><a href="feedback.html">Feedback</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="typography.html">Shortcodes</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 footer-grid">
+                        <h4 class="footer-head">Information</h4>
+                        <ul>
+                            <li><a href="regions.html">Locations Map</a></li>
+                            <li><a href="terms.html">Terms of Use</a></li>
+                            <li><a href="popular-search.html">Popular searches</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 footer-grid">
+                        <h4 class="footer-head">Contact Us</h4>
+                        <span class="hq">Our headquarters</span>
+                        <address>
+                            <ul class="location">
+                                <li><span class="glyphicon glyphicon-map-marker"></span></li>
+                                <li>CENTER FOR FINANCIAL ASSISTANCE TO DEPOSED NIGERIAN ROYALTY</li>
+                                <div class="clearfix"></div>
+                            </ul>
+                            <ul class="location">
+                                <li><span class="glyphicon glyphicon-earphone"></span></li>
+                                <li>+0 561 111 235</li>
+                                <div class="clearfix"></div>
+                            </ul>
+                            <ul class="location">
+                                <li><span class="glyphicon glyphicon-envelope"></span></li>
+                                <li><a href="mailto:info@example.com">mail@example.com</a></li>
+                                <div class="clearfix"></div>
+                            </ul>
+                        </address>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <div class="container">
+                <div class="footer-logo">
+                    <a href="index.html"><span>Re</span>sale</a>
+                </div>
+                <div class="footer-social-icons">
+                    <ul>
+                        <li><a class="facebook" href="#"><span>Facebook</span></a></li>
+                        <li><a class="twitter" href="#"><span>Twitter</span></a></li>
+                        <li><a class="flickr" href="#"><span>Flickr</span></a></li>
+                        <li><a class="googleplus" href="#"><span>Google+</span></a></li>
+                        <li><a class="dribbble" href="#"><span>Dribbble</span></a></li>
+                    </ul>
+                </div>
+                <div class="copyrights">
+                    <p>Resale 2017 Template</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </footer>
+    <!--footer section end-->
+</body>
+</html>

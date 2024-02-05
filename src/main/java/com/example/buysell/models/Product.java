@@ -3,9 +3,13 @@ package com.example.buysell.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +33,7 @@ public class Product {
 
     @NotNull(message = "Field product price can't be empty!")
     @Min(value = 0, message = "Price should be grater then zero!")
-    private int price;
+    private BigDecimal price;
 
     private String city;
 
@@ -38,12 +42,17 @@ public class Product {
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
 
+    @CreationTimestamp
+    private LocalDateTime dateOfCreation;
+
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn
     private Category category;
+
 
     public void addImageToProduct(Image image) {
         image.setProduct(this);

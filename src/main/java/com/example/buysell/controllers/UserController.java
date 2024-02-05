@@ -23,6 +23,11 @@ public class UserController {
     private final CategoryService categoryService;
     private final ProductService productService;
 
+    @ModelAttribute(value = "user")
+    public User user(Principal principal) {
+        return userService.getUserByPrincipal(principal);
+    }
+
     @ModelAttribute(value = "wishListSize")
     public int wishListSize(Principal principal) {
         WishList wishList = userService.getUserByPrincipal(principal).getWishList();
@@ -43,19 +48,20 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/register")
     public String registration() {
-        return "registration";
+        return "register";
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public String createUser(User user, Model model) {
         if (!userService.createUser(user)) {
-            model.addAttribute("errorMessage", "Пользователь с email:" + user.getEmail() + "уже существует");
-            return "registration";
+            model.addAttribute("errorMessage", "  User with email:" + user.getEmail() + " is already exists");
+            return "register";
         }
         return "redirect:/login";
     }
+
 
     @GetMapping("/user/{userToView}")
     public String products(Model model, Principal principal,
@@ -73,7 +79,7 @@ public class UserController {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("userToView", userToView);
         model.addAttribute("categories", categoryService.listOfCategories());
-        
+
         int pageSize = 5;
 
         Page<Product> page = productService.listAllByUser(userToView, pageNum, pageSize, sortField, sortDir);

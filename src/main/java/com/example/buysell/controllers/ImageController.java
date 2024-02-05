@@ -29,7 +29,8 @@ public class ImageController {
 
     @GetMapping(value = {"product/images/{id}",
             "user/product/images/{id}",
-            "product/edit-start/images/{id}"})
+            "product/edit-start/images/{id}",
+            "category/images/{id}"})
     private ResponseEntity<?> getImageById(@PathVariable Long id) {
         Image image = imageRepository.findById(id).orElse(null);
         try {

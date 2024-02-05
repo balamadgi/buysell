@@ -22,4 +22,12 @@ public class Category {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    public void addImageToCategory(Image image) {
+        image.setCategory(this);
+        this.image = image;
+    }
 }

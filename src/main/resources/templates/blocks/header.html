@@ -1,77 +1,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
-
 <div th:fragment="header">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-
-        <link rel="stylesheet" type="text/css" media="all"
-              href="/static/css/style.css"/>
-        <title>Buy - sell</title>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    </head>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">
-                <img src="/static/images/buy.png" alt="Buy-sell" width="30" height="24">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item" th:if="${user.isAdmin()}">
-                        <a class="nav-link" href="/admin"><img src="/static/images/admin-panel.png" alt="Buy-sell" width="30" height="24">
-                            Admin panel</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false"> <img src="/static/images/categories.png" alt="Buy-sell" width="30" height="24">
-                            Categories
-                        </a>
-                        <ul class="dropdown-menu scrollable-menu">
-                            <li th:each="cat : ${categories}">
-                                <a class="dropdown-item" th:href="@{'/category/' + ${cat.id}}" th:text="${cat.title}">Cat.title</a>
-                            </li>
-                        </ul>
-                    </li>
-                        <a class="nav-link" href="/product-new"><img src="/static/images/add.png" alt="Buy-sell" width="30" height="24">Add new product</a>
-                    </li>
-                </ul>
-
-                <div class="navbar-nav" th:if="${user.email}">
-                    <form class="d-flex" role="search" th:action="@{/search}">
-                        <input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search"
-                               name="keyword" id="keyword" th:value="${keyword}" required>
-                    </form>
-                    <form class="nav-item">
-                        <a class="nav-link" th:href="@{'/user/' + ${user.id}}">
-                            <img class="mx-2" src="/static/images/user.png" alt="User profile" width="30" height="24"><span th:text="${user.name}"></span></a>
-                    </form>
-                    <form class="nav-item">
-                        <a class="nav-link" th:href="@{'/user/' + ${user.id}} + '/wishlist'">
-                            <img class="mx-2" src="/static/images/wishlist.png" alt="User profile" width="30" height="24"><span class="wishlist" th:text="${wishListSize}"></span></a>
-
-                    </form>
-                    <form class="d-flex" action="/logout" method="post">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                        <button class="btn btn-light" type="submit">Logout</button>
-                    </form>
-                </div>
-
-                <div th:unless="${user.email}">
-                    <a href="/login" class="btn btn-success">Login</a>
-                </div>
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="/"><span>Re</span>sale</a>
             </div>
+
+            <form action="/logout" method="post">
+                <div class="header-right">
+                    <div class="logout" th:if="${user.email}">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <input type="submit" value="Logout">
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="header-right" th:unless="${user.email}">
+                <a class="account" href="/login">Log in</a>
+            </div>
+
+            <div class="header-right" th:if="${user.email}">
+
+                <a th:if="${user.isAdmin()}" class="account" href="/admin"><img src="/static/images/admin.png"
+                                                                                alt="Admin panel" width="25"
+                                                                                height="17"></a>
+                <a class="account" th:href="@{'/user/' + ${user.id}}">My account</a>
+            </div>
+
+
         </div>
-    </nav>
+    </div>
 
 </div>
